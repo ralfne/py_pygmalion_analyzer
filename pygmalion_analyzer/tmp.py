@@ -4,6 +4,10 @@ from pygmalion.donors.iterator import GenModelWrapperIterator
 from pygmalion.persistence.default_persistence_handler import DefaultPersistenceHandler
 
 from pygmalion_analyzer.statistics.descriptions.gene_usage_table import MarginalGeneUsageTable
+import pandas as pd
+
+s = pd.Series(data=[1,2,3,4], index=['a','c','b','x'])
+s = s.sort_index()
 
 logger = StdOutLogger(verbose=False)
 
@@ -26,9 +30,9 @@ d_1363 = donors_hc.get_donor('1363_')
 d_1365 = donors_hc.get_donor('1365_')
 itr = GenModelWrapperIterator([d_1363, d_1365])
 
-for gmw in itr:
-    gmw.merge_alleles(events=None, prefixes=None, assert_merge_definitions=False)
-genes = ['TRBV7-2','TRAV26-1*01']
+# for gmw in itr:
+#     gmw.merge_alleles(events=None, prefixes=None, assert_merge_definitions=False)
+genes = ['TRBV11-3*01','TRBV5-1*01', 'TRBV6-8*01', 'TRBV9*01']
 tbl = MarginalGeneUsageTable([[d_1363, d_1365]], None)
 tbl.run()
 

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pygmalion_analyzer',
-    version='0.34',
+    version='0.53',
     packages=['pygmalion_analyzer', 'pygmalion_analyzer.tests',
               'pygmalion_analyzer.distances', 'pygmalion_analyzer.figures','pygmalion_analyzer.clustering',
               'pygmalion_analyzer.statistics',

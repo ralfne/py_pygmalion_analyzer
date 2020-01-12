@@ -1,11 +1,18 @@
 from bayesian_network_utilities.api.bayesian_network_wrapper import ProbabilityType
 import pandas as pd
+from pygmalion.genmodel.nicknames import Nicknames
+
 from pygmalion_analyzer.clustering.marginals_feature_matrix import MarginalsFeatureMatrix
 
 
 class ConditionalsFeatureMatrix(MarginalsFeatureMatrix):
     def __init__(self, items, nicknames, chain=None):
-        super(ConditionalsFeatureMatrix, self).__init__(items=items, nicknames=nicknames,chain=chain)
+        super(ConditionalsFeatureMatrix, self).__init__(items=items, nicknames=nicknames, chain=chain)
+        illegal_nicknames = [Nicknames.vj_dinucl.value, Nicknames.vd_dinucl.value, Nicknames.dj_dinucl.value,
+                             Nicknames.vj_ins.value, Nicknames.vd_ins.value, Nicknames.dj_ins.value]
+        intersect = list(set(illegal_nicknames) & set(self._nicknames))
+        if len(intersect) != 0:
+            raise ValueError('Illegal nickname(s) for ConditionalsFeatureMatrix')
 
     def _get_series_for_nicknames(self, genmodel_wrapper, bn_wrapper):
         series = []

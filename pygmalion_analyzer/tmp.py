@@ -3,7 +3,8 @@ from pygmalion.donors.donors import Donors
 from pygmalion.donors.iterator import GenModelWrapperIterator
 from pygmalion.genmodel.nicknames import Nicknames
 from pygmalion.persistence.default_persistence_handler import DefaultPersistenceHandler
-from pygmalion_analyzer.distances.calculators import JensenShannonCalculator
+from pygmalion_analyzer.distances.calculators import JensenShannonCalculator, SymmetricKullbackLeiblerCalculator, \
+    EuclideanDistanceCalculator
 
 from pygmalion_analyzer.clustering.marginals_feature_matrix import MarginalsFeatureMatrix
 
@@ -54,6 +55,7 @@ def calc_separate(calculator, dfs, weights):
         x = calculator.run(df)
         x = x * weight
         out += x
+    out = out / sum(weights)
     return out
 
 
@@ -91,16 +93,19 @@ def print_results(df1, df2):
             print str(v1) + ' - ' + str(v2)
 
 
-weights = [0.5 ,0.5]
+weights = [3 , 2]
 df_v_gene = create_v_gene_features()
 df_v_del = create_v_del_features()
 df_comb = create_combined([df_v_gene, df_v_del], weights)
-calc = JensenShannonCalculator(base=2)
+#calc = JensenShannonCalculator(base=2)
+calc = EuclideanDistanceCalculator()
 
 df_comb = transform_into_distribution([df_comb])
 
 x_comb = calc_combined(calc, df_comb[0])
+
 x_sep = calc_separate(calc, [df_v_gene, df_v_del], weights)
+#x_sep = x_sep/3.0
 
 print_results(x_sep, x_comb)
 
